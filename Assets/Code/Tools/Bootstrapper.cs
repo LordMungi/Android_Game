@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public static class Bootstrapper
 {
@@ -7,5 +6,6 @@ public static class Bootstrapper
     private static void Initialize()
     {
         ServiceProvider.Instance.AddService<EventBus>(new EventBus());
+        ServiceProvider.Instance.AddService<SceneLoader>(new GameObject("SceneLoader").AddComponent<SceneLoader>());
     }
 }
