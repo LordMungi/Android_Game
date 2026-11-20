@@ -137,6 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fc348828241e344b0c962815debf4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mole
+  topLimit: 0.5
+  bottomLimit: 0.5
+  moveDuration: 1
 --- !u!58 &6001125007480836664
 CircleCollider2D:
   m_ObjectHideFlags: 0

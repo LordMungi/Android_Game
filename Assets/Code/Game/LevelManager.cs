@@ -23,6 +23,10 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        
+        foreach (Mole mole in _moles)
+        {
+            if (Random.Range(0, 1000) == 0)
+                mole.Rise();
+        }
     }
 }
