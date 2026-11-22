@@ -106,7 +106,7 @@ public class LevelManager : MonoBehaviour
             if (m)
             {
                 m.Rise();
-                TaskScheduler.Schedule(m.hideAction, config.moleHideTime);
+                //TaskScheduler.Schedule(m.hideAction, config.moleHideTime);
             }
 
             TaskScheduler.Schedule(_showMoleAction, UnityEngine.Random.Range(config.nextMoleMinTime, config.nextMoleMaxTime));
