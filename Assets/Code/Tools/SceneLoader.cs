@@ -17,6 +17,9 @@ public class SceneLoader : MonoBehaviour, IService
         Scene activeScene = SceneManager.GetActiveScene();
         bool shouldLoad = false;
 
+        ServiceProvider.Instance.ClearNonPersistantServices();
+        ServiceProvider.Instance.AddService<EventBus>(new EventBus());
+
         await Load("Loading");
         await Unload(activeScene.name);
         Awaitable loadScene = Load(scene, canActivate : () => shouldLoad);
@@ -24,9 +27,6 @@ public class SceneLoader : MonoBehaviour, IService
         shouldLoad = true;
         await loadScene;
         await Unload("Loading");
-
-        ServiceProvider.Instance.ClearNonPersistantServices();
-        ServiceProvider.Instance.AddService<EventBus>(new EventBus());
     }
 
     private async Awaitable Load(string scene, Func<bool> canActivate = null)
