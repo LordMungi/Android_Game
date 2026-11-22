@@ -18,6 +18,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float moveDuration;
 
     public State state { get; private set; }
+    public Action hideAction { get; private set; }
 
     private Vector3 _topPosition;
     private Vector3 _bottomPosition;
@@ -29,6 +30,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         _bottomPosition = transform.position - new Vector3(0, bottomLimit, 0);
 
         transform.position = _bottomPosition;
+        hideAction = Hide;
     }
 
     void Start()

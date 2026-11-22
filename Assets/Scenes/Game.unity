@@ -363,6 +363,8 @@ MonoBehaviour:
   - {fileID: 1793236121}
   - {fileID: 2123025856}
   molePrefab: {fileID: 221851365252097515, guid: 509be4b006515084099f04a1d79038b0, type: 3}
+  timeToStart: 3
+  config: {fileID: 11400000, guid: 4769a01f967ec2241a39c82bad950bb0, type: 2}
 --- !u!4 &1013291446
 Transform:
   m_ObjectHideFlags: 0
