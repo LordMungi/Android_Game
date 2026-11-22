@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     private List<Mole> _moles = new List<Mole>();
     private float _timer = 0f;
     private int _timerInt = 0;
+    private int _totalPoints = 0;
 
     private State _state = State.Starting;
 
@@ -38,11 +39,18 @@ public class LevelManager : MonoBehaviour
         _showMoleAction = ShowMole;
 
         _timer = timeToStart;
+        _totalPoints = 0;
+        EventBus.Raise<OnPointsUpdated>(_totalPoints);
     }
 
-    void Start()
+    private void OnEnable()
     {
+        EventBus.Subscribe<OnMoleHit>(UpdatePoints);
+    }
 
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<OnMoleHit>(UpdatePoints);
     }
 
     void Update()
@@ -122,5 +130,11 @@ public class LevelManager : MonoBehaviour
             _timerInt = remainingSeconds;
             EventBus.Raise<OnTimerUpdated>(_timerInt);
         }
+    }
+
+    private void UpdatePoints(in OnMoleHit context)
+    {
+        _totalPoints += context.pointsValue;
+        EventBus.Raise<OnPointsUpdated>(_totalPoints);
     }
 }

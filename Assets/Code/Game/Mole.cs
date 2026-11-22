@@ -5,18 +5,22 @@ using UnityEngine.EventSystems;
 
 public class Mole : MonoBehaviour, IPointerClickHandler
 {
+    private EventBus EventBus => ServiceProvider.Instance.GetService<EventBus>();
+
     [Serializable]
     public enum State 
     {
         Hidden,
         Rising,
         Shown,
-        Hiding
+        Hiding,
+        Hiding_Hit
     }
 
     [SerializeField] private float topLimit;
     [SerializeField] private float bottomLimit;
     [SerializeField] private float moveDuration;
+    [SerializeField] private int pointValue;
 
     [field: SerializeField] public State state { get; private set; }
 
@@ -25,6 +29,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
 
     private Vector3 _topPosition;
     private Vector3 _bottomPosition;
+
 
     private void Awake()
     {
@@ -63,7 +68,12 @@ public class Mole : MonoBehaviour, IPointerClickHandler
 
     public void Hit()
     {
-        Hide();
+        if (state == State.Shown || state == State.Rising)
+        {
+            state = State.Hiding_Hit;
+            Move(transform.position, _bottomPosition, Mathf.InverseLerp(_bottomPosition.y, _topPosition.y, transform.position.y) * moveDuration, State.Hiding_Hit, onFinish: _setStateHidden);
+            EventBus.Raise<OnMoleHit>(pointValue);
+        }
     }
 
     private async void Move(Vector3 fromPosition, Vector3 toPosition, float duration, State doWhileInState, Action onFinish = null)
