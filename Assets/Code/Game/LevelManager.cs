@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -115,6 +116,8 @@ public class LevelManager : MonoBehaviour
             {
                 m.Rise();
                 m.ScheduleHiding(config.moleHideTime);
+                if (UnityEngine.Random.Range(0, 100) <= config.frozenProbability)
+                    m.AddProperty(new FrozenProperty());
             }
 
             TaskScheduler.Schedule(_showMoleAction, UnityEngine.Random.Range(config.nextMoleMinTime, config.nextMoleMaxTime));

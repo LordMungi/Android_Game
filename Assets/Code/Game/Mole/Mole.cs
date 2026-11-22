@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,6 +31,8 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private Vector3 _topPosition;
     private Vector3 _bottomPosition;
 
+    private List<IMoleProperty> _properties = new List<IMoleProperty>();
+
 
     private void Awake()
     {
@@ -39,7 +42,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
 
         transform.position = _bottomPosition;
 
-        _setStateHidden = () => state = State.Hidden;
+        _setStateHidden = () => { state = State.Hidden; _properties.Clear(); };
         _setStateShown = () => state = State.Shown;
     }
 
@@ -70,11 +73,38 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     {
         if (state == State.Shown || state == State.Rising)
         {
-            state = State.Hiding_Hit;
-            Move(transform.position, _bottomPosition, Mathf.InverseLerp(_bottomPosition.y, _topPosition.y, transform.position.y) * moveDuration, State.Hiding_Hit, onFinish: _setStateHidden);
-            EventBus.Raise<OnMoleHit>(pointValue);
+            bool canKill = true;
+            foreach (IMoleProperty property in _properties)
+            {
+                if (!property.CanKill())
+                {
+                    canKill = false;
+                    break;
+                }
+            }
+
+            if (canKill)
+            {
+                state = State.Hiding_Hit;
+                Move(transform.position, _bottomPosition, Mathf.InverseLerp(_bottomPosition.y, _topPosition.y, transform.position.y) * moveDuration, State.Hiding_Hit, onFinish: _setStateHidden);
+                EventBus.Raise<OnMoleHit>(pointValue); 
+            }
+            else
+            {
+                foreach (IMoleProperty property in _properties)
+                {
+                    property.Tap();
+                }
+            }
         }
     }
+
+    public void AddProperty(IMoleProperty property)
+    {
+        _properties.Add(property);
+    }
+
+
 
     private async void Move(Vector3 fromPosition, Vector3 toPosition, float duration, State doWhileInState, Action onFinish = null)
     {
