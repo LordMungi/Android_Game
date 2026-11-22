@@ -1,10 +1,11 @@
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Mole : MonoBehaviour
+public class Mole : MonoBehaviour, IPointerClickHandler
 {
-    private enum State
+    public enum State
     {
         Hidden,
         Rising,
@@ -16,14 +17,14 @@ public class Mole : MonoBehaviour
     [SerializeField] private float bottomLimit;
     [SerializeField] private float moveDuration;
 
-    private State _state;
+    public State state { get; private set; }
 
     private Vector3 _topPosition;
     private Vector3 _bottomPosition;
 
     private void Awake()
     {
-        _state = State.Hidden;
+        state = State.Hidden;
         _topPosition = transform.position + new Vector3(0, topLimit, 0);
         _bottomPosition = transform.position - new Vector3(0, bottomLimit, 0);
 
@@ -37,26 +38,25 @@ public class Mole : MonoBehaviour
 
     public void Rise()
     {
-        if (_state == State.Hidden)
+        if (state == State.Hidden)
         {
-            _state = State.Rising;
-            Move(_bottomPosition, _topPosition, moveDuration, onFinish: () => _state = State.Shown);
+            state = State.Rising;
+            Move(_bottomPosition, _topPosition, moveDuration, onFinish: () => state = State.Shown);
         }
     }
 
     public void Hide()
     {
-        if (_state == State.Shown)
+        if (state == State.Shown)
         { 
-            _state = State.Hiding;
-            Move(_topPosition, _bottomPosition, moveDuration, onFinish : () => _state = State.Hidden);
+            state = State.Hiding;
+            Move(_topPosition, _bottomPosition, moveDuration, onFinish : () => state = State.Hidden);
         }
     }
 
     public void Hit()
     {
-        if (_state == State.Shown)
-            _state = State.Hiding;
+        Hide();
     }
 
     private async void Move(Vector3 fromPosition, Vector3 toPosition, float duration, Action onFinish = null)
@@ -78,5 +78,10 @@ public class Mole : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position + new Vector3(0, topLimit, 0), transform.position - new Vector3(0, bottomLimit, 0)); 
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Hit();
     }
 }
