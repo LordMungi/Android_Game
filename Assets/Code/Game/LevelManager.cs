@@ -106,16 +106,11 @@ public class LevelManager : MonoBehaviour
             if (m)
             {
                 m.Rise();
-                //TaskScheduler.Schedule(m.hideAction, config.moleHideTime);
+                m.ScheduleHiding(config.moleHideTime);
             }
 
             TaskScheduler.Schedule(_showMoleAction, UnityEngine.Random.Range(config.nextMoleMinTime, config.nextMoleMaxTime));
         }
-    }
-
-    public void HideMole(Mole mole)
-    {
-        mole.Hide();
     }
 
     private void UpdateTimer()

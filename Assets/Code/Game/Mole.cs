@@ -19,15 +19,12 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float moveDuration;
 
     [field: SerializeField] public State state { get; private set; }
-    public Action hideAction { get; private set; }
+
     private Action _setStateHidden;
     private Action _setStateShown;
 
     private Vector3 _topPosition;
     private Vector3 _bottomPosition;
-
-    private CancellationTokenSource _riseCt = new CancellationTokenSource();
-    private CancellationTokenSource _hideCt = new CancellationTokenSource();
 
     private void Awake()
     {
@@ -36,7 +33,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         _bottomPosition = transform.position - new Vector3(0, bottomLimit, 0);
 
         transform.position = _bottomPosition;
-        hideAction = Hide;
+
         _setStateHidden = () => state = State.Hidden;
         _setStateShown = () => state = State.Shown;
     }
@@ -59,7 +56,6 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     {
         if (state == State.Shown || state == State.Rising)
         {
-            _riseCt.Cancel();
             state = State.Hiding;
             Move(transform.position, _bottomPosition, Mathf.InverseLerp(_bottomPosition.y, _topPosition.y, transform.position.y) * moveDuration, State.Hiding, onFinish: _setStateHidden);
         }
@@ -86,6 +82,19 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         }
         transform.position = toPosition;
         onFinish?.Invoke();
+    }
+    public async void ScheduleHiding(float time)
+    {
+        float t = 0;
+        CancellationToken dct = destroyCancellationToken;
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            await Awaitable.NextFrameAsync(dct);
+            if (state != State.Rising && state != State.Shown)
+                return;
+        }
+        Hide();
     }
 
     private void OnDrawGizmos()
