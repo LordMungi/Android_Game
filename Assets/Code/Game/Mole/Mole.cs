@@ -22,6 +22,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float bottomLimit;
     [SerializeField] private float moveDuration;
     [SerializeField] private int pointValue;
+    [SerializeField] private Animator animator;
 
     [field: SerializeField] public State state { get; private set; }
 
@@ -32,6 +33,8 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private Vector3 _bottomPosition;
 
     private List<IMoleProperty> _properties = new List<IMoleProperty>();
+
+    private MoleAnimator _animator;
 
 
     private void Awake()
@@ -44,11 +47,18 @@ public class Mole : MonoBehaviour, IPointerClickHandler
 
         _setStateHidden = () => { state = State.Hidden; _properties.Clear(); };
         _setStateShown = () => state = State.Shown;
+
+        _animator = new MoleAnimator(animator);
     }
 
     void Start()
     {
 
+    }
+
+    private void Update()
+    {
+        _animator?.Animate(state);
     }
 
     public void Rise()
