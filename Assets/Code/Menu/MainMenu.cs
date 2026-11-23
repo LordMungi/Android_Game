@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
+    private AndroidLogger AndroidLogger => ServiceProvider.Instance.GetService<AndroidLogger>();
+
+
     public bool isSignedIn { get; private set; }
 
     [SerializeField] private Canvas mainMenuCanvas;
@@ -53,11 +56,11 @@ public class MainMenu : MonoBehaviour
 
     public void ShowLogs()
     {
-
+        AndroidLogger.ShowLogs();
     }
 
     public void ClearLogs()
     {
-
+        AndroidLogger.ClearLogs();
     }
 }

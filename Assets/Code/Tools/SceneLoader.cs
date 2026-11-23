@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour, IService
 {
+    private AndroidLogger AndroidLogger => ServiceProvider.Instance.GetService<AndroidLogger>();
     public bool IsPersistant => true;
 
     private void Awake()
@@ -27,6 +28,8 @@ public class SceneLoader : MonoBehaviour, IService
         shouldLoad = true;
         await loadScene;
         await Unload("Loading");
+
+        AndroidLogger.SendLog("Loaded scene: " + scene + ".");
     }
 
     private async Awaitable Load(string scene, Func<bool> canActivate = null)
