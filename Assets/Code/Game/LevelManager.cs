@@ -82,6 +82,10 @@ public class LevelManager : MonoBehaviour
                         {
                             mole.Hide();
                         }
+
+                        int coins = _totalPoints / 100;
+                        ConfigurationManager.totalCoins += coins;
+                        EventBus.Raise<OnGameEnded>(_totalPoints, coins);                        
                         break;
                     }
                     break;

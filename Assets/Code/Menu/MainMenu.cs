@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     private AndroidLogger AndroidLogger => ServiceProvider.Instance.GetService<AndroidLogger>();
+    private SceneLoader SceneLoader => ServiceProvider.Instance.GetService<SceneLoader>();
 
 
     public bool isSignedIn { get; private set; }
@@ -25,7 +26,7 @@ public class MainMenu : MonoBehaviour
 
     public void LoadScene(string scene)
     {
-        ServiceProvider.Instance.GetService<SceneLoader>().LoadScene(scene);
+        SceneLoader.LoadScene(scene);
     }
 
     public void ShowAchievements()
