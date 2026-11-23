@@ -59,6 +59,10 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private void Update()
     {
         _animator?.Animate(state);
+        foreach (IMoleProperty property in _properties)
+        {
+            property.Animate(animator);
+        }
     }
 
     public void Rise()

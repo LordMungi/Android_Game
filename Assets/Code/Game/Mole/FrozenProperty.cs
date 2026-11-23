@@ -4,14 +4,15 @@ public class FrozenProperty : IMoleProperty
 {
     private enum FreezeState
     {
-        Frozen,
-        Cracked1,
-        Cracked2,
+        Unfrozen,
         Cracked3,
-        Unfrozen
+        Cracked2,
+        Cracked1,
+        Frozen
     }
 
-    private FreezeState _freezeState;
+    private FreezeState _freezeState = FreezeState.Frozen;
+    private bool _stateChanged = false;
 
     public bool CanKill()
     {
@@ -21,14 +22,19 @@ public class FrozenProperty : IMoleProperty
     public void Shake()
     {
         if (_freezeState != FreezeState.Unfrozen)
-           _freezeState++;
+        {
+            _stateChanged = true;
+           _freezeState--;
+        }
     }
 
     public void Tap()
     {
         if (_freezeState != FreezeState.Unfrozen)
-            _freezeState++;
-        Debug.Log("State:" +  _freezeState);
+        {
+            _stateChanged = true;
+            _freezeState--;
+        }
     }
 
     public void Assign(params object[] parameters)
@@ -38,6 +44,15 @@ public class FrozenProperty : IMoleProperty
 
     public void Reset()
     {
-        _freezeState = FreezeState.Frozen;
+        _freezeState = FreezeState.Unfrozen;
+    }
+
+    public void Animate(Animator animator)
+    {
+        if (_stateChanged)
+        {
+            animator.SetInteger("Freeze", (int)_freezeState);
+            _stateChanged = false;
+        }
     }
 }
