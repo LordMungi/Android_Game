@@ -165,7 +165,7 @@ MonoBehaviour:
   bottomLimit: 0.5
   moveDuration: 1
   pointValue: 100
-  animator: {fileID: 3322291481736337403}
+  <animator>k__BackingField: {fileID: 3322291481736337403}
   <state>k__BackingField: 0
 --- !u!58 &6001125007480836664
 CircleCollider2D:

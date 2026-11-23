@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public interface IMoleProperty : IResettable
+public interface IMoleProperty
 {
     public bool CanKill();
     public void Tap();
     public void Shake();
-    public void Animate(Animator animator);
+    public void Animate();
 
 }

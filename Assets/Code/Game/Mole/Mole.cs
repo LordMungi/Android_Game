@@ -9,7 +9,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private EventBus EventBus => ServiceProvider.Instance.GetService<EventBus>();
 
     [Serializable]
-    public enum State 
+    public enum State
     {
         Hidden,
         Rising,
@@ -22,7 +22,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float bottomLimit;
     [SerializeField] private float moveDuration;
     [SerializeField] private int pointValue;
-    [SerializeField] private Animator animator;
+    [field: SerializeField] public Animator animator { get; private set; }
 
     [field: SerializeField] public State state { get; private set; }
 
@@ -45,7 +45,11 @@ public class Mole : MonoBehaviour, IPointerClickHandler
 
         transform.position = _bottomPosition;
 
-        _setStateHidden = () => { state = State.Hidden; _properties.Clear(); };
+        _setStateHidden = () => 
+        { 
+            state = State.Hidden;
+            _properties.Clear(); 
+        };
         _setStateShown = () => state = State.Shown;
 
         _animator = new MoleAnimator(animator);
@@ -61,7 +65,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         _animator?.Animate(state);
         foreach (IMoleProperty property in _properties)
         {
-            property.Animate(animator);
+            property.Animate();
         }
     }
 
@@ -101,7 +105,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
             {
                 state = State.Hiding_Hit;
                 Move(transform.position, _bottomPosition, Mathf.InverseLerp(_bottomPosition.y, _topPosition.y, transform.position.y) * moveDuration, State.Hiding_Hit, onFinish: _setStateHidden);
-                EventBus.Raise<OnMoleHit>(pointValue); 
+                EventBus.Raise<OnMoleHit>(pointValue);
             }
             else
             {
@@ -126,7 +130,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         CancellationToken dct = destroyCancellationToken;
 
         while (t < duration)
-        {            
+        {
             transform.position = Vector3.Lerp(fromPosition, toPosition, t / duration);
             t += Time.deltaTime;
             await Awaitable.NextFrameAsync(dct);

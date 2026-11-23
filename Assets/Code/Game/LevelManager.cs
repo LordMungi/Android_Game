@@ -28,6 +28,8 @@ public class LevelManager : MonoBehaviour
     private State _state = State.Starting;
 
     private Action _showMoleAction;
+
+    private ConcurrentPool _pool;
     
     private void Awake()
     {
@@ -117,7 +119,7 @@ public class LevelManager : MonoBehaviour
                 m.Rise();
                 m.ScheduleHiding(config.moleHideTime);
                 if (UnityEngine.Random.Range(0, 100) <= config.frozenProbability)
-                    m.AddProperty(new FrozenProperty());
+                    m.AddProperty(new FrozenProperty(m.animator));
             }
 
             TaskScheduler.Schedule(_showMoleAction, UnityEngine.Random.Range(config.nextMoleMinTime, config.nextMoleMaxTime));

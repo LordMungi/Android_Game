@@ -14,6 +14,8 @@ public class FrozenProperty : IMoleProperty
     private FreezeState _freezeState = FreezeState.Frozen;
     private bool _stateChanged = false;
 
+    private Animator _animator;
+
     public bool CanKill()
     {
         return _freezeState == FreezeState.Unfrozen;
@@ -37,21 +39,23 @@ public class FrozenProperty : IMoleProperty
         }
     }
 
-    public void Assign(params object[] parameters)
+    public FrozenProperty(Animator animator)
     {
         _freezeState = FreezeState.Frozen;
+        _animator = animator;
+        _animator.SetInteger("Freeze", (int)FreezeState.Frozen);
     }
 
-    public void Reset()
+    ~FrozenProperty()
     {
-        _freezeState = FreezeState.Unfrozen;
+        _animator.SetInteger("Freeze", (int)FreezeState.Unfrozen);
     }
 
-    public void Animate(Animator animator)
+    public void Animate()
     {
         if (_stateChanged)
         {
-            animator.SetInteger("Freeze", (int)_freezeState);
+            _animator.SetInteger("Freeze", (int)_freezeState);
             _stateChanged = false;
         }
     }
