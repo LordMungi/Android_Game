@@ -6,6 +6,9 @@ public class MainMenu : MonoBehaviour
 {
     public bool isSignedIn { get; private set; }
 
+    [SerializeField] private Canvas mainMenuCanvas;
+    [SerializeField] private Canvas loggerCanvas;
+
     void Start()
     {
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
@@ -36,5 +39,25 @@ public class MainMenu : MonoBehaviour
     public void SignInManually()
     {
         PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication);
+    }
+
+    public void SetLogger(bool v)
+    {
+        loggerCanvas.gameObject.SetActive(v);
+    }
+
+    public void SetMainMenu(bool v)
+    {
+        mainMenuCanvas.gameObject.SetActive(v);
+    }
+
+    public void ShowLogs()
+    {
+
+    }
+
+    public void ClearLogs()
+    {
+
     }
 }
