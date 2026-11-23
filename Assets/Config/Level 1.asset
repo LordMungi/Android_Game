@@ -16,4 +16,4 @@ MonoBehaviour:
   <nextMoleMinTime>k__BackingField: 1
   <nextMoleMaxTime>k__BackingField: 2
   <moleHideTime>k__BackingField: 4
-  <frozenProbability>k__BackingField: 100
+  <frozenProbability>k__BackingField: 50
