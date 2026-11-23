@@ -34,6 +34,7 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         ServiceProvider.Instance.AddService<TaskScheduler>(new GameObject("TaskScheduler").AddComponent<TaskScheduler>());
+        ServiceProvider.Instance.AddService<InputHandler>(new GameObject("InputHandler").AddComponent<InputHandler>());
 
         foreach (Transform location in spawnLocations)
         {

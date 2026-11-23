@@ -55,6 +55,16 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         _animator = new MoleAnimator(animator);
     }
 
+    private void OnEnable()
+    {
+        EventBus.Subscribe<OnShakeDetected>(OnShake);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<OnShakeDetected>(OnShake);
+    }
+
     void Start()
     {
 
@@ -122,8 +132,6 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         _properties.Add(property);
     }
 
-
-
     private async void Move(Vector3 fromPosition, Vector3 toPosition, float duration, State doWhileInState, Action onFinish = null)
     {
         float t = 0;
@@ -153,6 +161,14 @@ public class Mole : MonoBehaviour, IPointerClickHandler
                 return;
         }
         Hide();
+    }
+
+    private void OnShake(in OnShakeDetected context)
+    {
+        foreach (IMoleProperty property in _properties)
+        {
+            property.Shake();
+        }
     }
 
     private void OnDrawGizmos()
