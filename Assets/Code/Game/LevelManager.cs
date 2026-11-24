@@ -33,7 +33,8 @@ public class LevelManager : MonoBehaviour
     
     private void Awake()
     {
-        config = ConfigurationManager.selectedLevel;
+        if (ConfigurationManager.selectedLevel != null)
+            config = ConfigurationManager.selectedLevel;
 
         ServiceProvider.Instance.AddService<TaskScheduler>(new GameObject("TaskScheduler").AddComponent<TaskScheduler>());
         ServiceProvider.Instance.AddService<InputHandler>(new GameObject("InputHandler").AddComponent<InputHandler>());
