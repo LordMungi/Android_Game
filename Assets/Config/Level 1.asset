@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   <timeLimit>k__BackingField: 30
   <nextMoleMinTime>k__BackingField: 1
-  <nextMoleMaxTime>k__BackingField: 2
-  <moleHideTime>k__BackingField: 4
-  <frozenProbability>k__BackingField: 50
+  <nextMoleMaxTime>k__BackingField: 4
+  <moleHideTime>k__BackingField: 3
+  <frozenProbability>k__BackingField: 0

@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private Canvas loggerCanvas;
+    [SerializeField] private Canvas levelsCanvas;
 
     void Start()
     {
@@ -22,6 +23,12 @@ public class MainMenu : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void StartGame(LevelConfig config)
+    {
+        ConfigurationManager.selectedLevel = config;
+        SceneLoader.LoadScene("Game");
     }
 
     public void LoadScene(string scene)
@@ -53,6 +60,10 @@ public class MainMenu : MonoBehaviour
     public void SetMainMenu(bool v)
     {
         mainMenuCanvas.gameObject.SetActive(v);
+    }
+    public void SetLevels(bool v)
+    {
+        levelsCanvas.gameObject.SetActive(v);
     }
 
     public void ShowLogs()
