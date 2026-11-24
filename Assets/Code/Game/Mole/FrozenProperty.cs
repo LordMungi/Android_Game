@@ -32,11 +32,11 @@ public class FrozenProperty : IMoleProperty
 
     public void Tap()
     {
-        if (_freezeState != FreezeState.Unfrozen)
-        {
-            _stateChanged = true;
-            _freezeState--;
-        }
+        //if (_freezeState != FreezeState.Unfrozen)
+        //{
+        //    _stateChanged = true;
+        //    _freezeState--;
+        //}
     }
 
     public FrozenProperty(Animator animator)
